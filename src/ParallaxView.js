@@ -85,7 +85,6 @@ ParallaxView.propTypes = {
     PropTypes.number,
   ]),
   header: PropTypes.node,
-  blur: PropTypes.string,
   contentInset: PropTypes.object,
 };
 
@@ -141,14 +140,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#2e2f31',
     width: screen.width,
     resizeMode: 'cover',
-  },
-  blur: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: 'transparent',
   },
   content: {
     shadowColor: '#222',
