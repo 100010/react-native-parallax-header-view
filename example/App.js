@@ -22,6 +22,7 @@ const App: () => React$Node = () => {
     fontSize: 40,
     fontWeight: '600',
     textAlign: 'center',
+    paddingTop: 80,
     color: Colors.black,
   };
 
