@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactNative from 'react-native';
-const {Dimensions, StyleSheet, View, ScrollView, Animated} = ReactNative;
+const {
+  Dimensions,
+  StyleSheet,
+  View,
+  ScrollView,
+  Animated,
+  ImageBackground,
+} = ReactNative;
 const screen = Dimensions.get('window');
 const ScrollViewPropTypes = ScrollView.propTypes;
 
@@ -24,25 +31,32 @@ export default class ParallaxView extends Component {
   }
 
   renderBackground() {
-    const {windowHeight, backgroundSource} = this.props;
+    const {windowHeight, backgroundSource, backgroundStyle} = this.props;
     if (!windowHeight || !backgroundSource) {
       return null;
     }
+
     return (
       <Animated.Image
-        style={getAnimateViewStyle(this.state.scrollY, windowHeight).background}
-        source={backgroundSource}
-      />
+        style={[
+          getAnimateViewStyle(this.state.scrollY, windowHeight).background,
+          backgroundStyle,
+        ]}
+        source={backgroundSource}></Animated.Image>
     );
   }
 
   renderHeader() {
-    const {windowHeight, backgroundSource} = this.props;
+    const {windowHeight, backgroundSource, headerStyle} = this.props;
     if (!windowHeight || !backgroundSource) {
       return null;
     }
     return (
-      <Animated.View style={getAnimateViewStyle(this.state.scrollY, windowHeight).header}>
+      <Animated.View
+        style={[
+          getAnimateViewStyle(this.state.scrollY, windowHeight).header,
+          headerStyle,
+        ]}>
         {this.props.header}
       </Animated.View>
     );
@@ -51,7 +65,7 @@ export default class ParallaxView extends Component {
   render() {
     const {style} = this.props;
     const onScroll = this.props.onScroll
-      ? (e) => {
+      ? e => {
           this.props.onScroll(e);
           this.state.onScroll(e);
         }
@@ -60,7 +74,7 @@ export default class ParallaxView extends Component {
       <View style={[styles.container, style]}>
         {this.renderBackground()}
         <ScrollView
-          ref={(component) => {
+          ref={component => {
             this._scrollView = component;
           }}
           {...this.props}
@@ -68,7 +82,9 @@ export default class ParallaxView extends Component {
           onScroll={onScroll}
           scrollEventThrottle={16}>
           {this.renderHeader()}
-          <View style={[styles.content, this.props.scrollableViewStyle]}>{this.props.children}</View>
+          <View style={[styles.content, this.props.scrollableViewStyle]}>
+            {this.props.children}
+          </View>
         </ScrollView>
       </View>
     );
@@ -78,6 +94,7 @@ export default class ParallaxView extends Component {
 ParallaxView.propTypes = {
   ...ScrollViewPropTypes,
   windowHeight: PropTypes.number,
+  backgroundStyle: PropTypes.any,
   backgroundSource: PropTypes.oneOfType([
     PropTypes.shape({
       uri: PropTypes.string,
@@ -105,10 +122,6 @@ const getAnimateViewStyle = (scrollY, windowHeight) => {
     },
     background: {
       position: 'absolute',
-      backgroundColor: '#2e2f31',
-      width: screen.width,
-      resizeMode: 'cover',
-      height: windowHeight,
       transform: [
         {
           translateY: scrollY.interpolate({
