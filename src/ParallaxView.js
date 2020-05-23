@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import ReactNative from 'react-native';
-const {
+import {
   Dimensions,
   StyleSheet,
   View,
   ScrollView,
   Animated,
   ImageBackground,
-} = ReactNative;
+} from 'react-native';
 const screen = Dimensions.get('window');
 const ScrollViewPropTypes = ScrollView.propTypes;
 
@@ -42,7 +41,8 @@ export default class ParallaxView extends Component {
           getAnimateViewStyle(this.state.scrollY, windowHeight).background,
           backgroundStyle,
         ]}
-        source={backgroundSource}></Animated.Image>
+        source={backgroundSource}
+      />
     );
   }
 
@@ -70,6 +70,7 @@ export default class ParallaxView extends Component {
           this.state.onScroll(e);
         }
       : this.state.onScroll;
+    const {refreshControl} = this.props;
     return (
       <View style={[styles.container, style]}>
         {this.renderBackground()}
@@ -80,6 +81,7 @@ export default class ParallaxView extends Component {
           {...this.props}
           style={styles.scrollView}
           onScroll={onScroll}
+          refreshControl={refreshControl}
           scrollEventThrottle={16}>
           {this.renderHeader()}
           <View style={[styles.content, this.props.scrollableViewStyle]}>
@@ -94,7 +96,8 @@ export default class ParallaxView extends Component {
 ParallaxView.propTypes = {
   ...ScrollViewPropTypes,
   windowHeight: PropTypes.number,
-  backgroundStyle: PropTypes.any,
+  backgroundStyle: PropTypes.object,
+  refreshControl: PropTypes.object,
   backgroundSource: PropTypes.oneOfType([
     PropTypes.shape({
       uri: PropTypes.string,
