@@ -63,6 +63,13 @@ export default class ParallaxView extends Component {
     );
   }
 
+  onScrollEndDrag(e) {
+    if(this.props.onScrollEndDrag) {
+      this.props.onScrollEndDrag(e);
+    }
+    this._scrollView.scrollTo({y: 0});
+  }
+
   render() {
     const {style} = this.props;
     const onScroll = this.props.onScroll
@@ -71,7 +78,6 @@ export default class ParallaxView extends Component {
           this.state.onScroll(e);
         }
       : this.state.onScroll;
-    const {refreshControl} = this.props;
     return (
       <View style={[styles.container, style]}>
         {this.renderBackground()}
@@ -82,7 +88,7 @@ export default class ParallaxView extends Component {
           {...this.props}
           style={styles.scrollView}
           onScroll={onScroll}
-          refreshControl={refreshControl}
+          onScrollEndDrag={(e) => {this.onScrollEndDrag(e)}}
           scrollEventThrottle={16}>
           {this.renderHeader()}
           <View style={[styles.content, this.props.scrollableViewStyle]}>
