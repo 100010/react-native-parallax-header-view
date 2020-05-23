@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import ReactNative from 'react-native';
-const {
+import {
   Dimensions,
   StyleSheet,
   View,
   ScrollView,
   Animated,
   ImageBackground,
-} = ReactNative;
+} from 'react-native';
 const screen = Dimensions.get('window');
 const ScrollViewPropTypes = ScrollView.propTypes;
 
@@ -31,7 +30,7 @@ export default class ParallaxView extends Component {
   }
 
   renderBackground() {
-    const {windowHeight, backgroundSource, backgroundStyle} = this.props;
+    const {windowHeight, backgroundSource, backgroundStyle, miniBlur, maxBlur} = this.props;
     if (!windowHeight || !backgroundSource) {
       return null;
     }
@@ -42,7 +41,9 @@ export default class ParallaxView extends Component {
           getAnimateViewStyle(this.state.scrollY, windowHeight).background,
           backgroundStyle,
         ]}
-        source={backgroundSource}></Animated.Image>
+        blurRadius={getImageBlur(this.state.scrollY, miniBlur || 0,maxBlur || 0)}
+        source={backgroundSource}
+      />
     );
   }
 
@@ -60,6 +61,13 @@ export default class ParallaxView extends Component {
         {this.props.header}
       </Animated.View>
     );
+  }
+
+  onScrollEndDrag(e) {
+    if(this.props.onScrollEndDrag) {
+      this.props.onScrollEndDrag(e);
+    }
+    this._scrollView.scrollTo({y: 0});
   }
 
   render() {
@@ -80,6 +88,7 @@ export default class ParallaxView extends Component {
           {...this.props}
           style={styles.scrollView}
           onScroll={onScroll}
+          onScrollEndDrag={(e) => {this.onScrollEndDrag(e)}}
           scrollEventThrottle={16}>
           {this.renderHeader()}
           <View style={[styles.content, this.props.scrollableViewStyle]}>
@@ -94,7 +103,8 @@ export default class ParallaxView extends Component {
 ParallaxView.propTypes = {
   ...ScrollViewPropTypes,
   windowHeight: PropTypes.number,
-  backgroundStyle: PropTypes.any,
+  backgroundStyle: PropTypes.object,
+  refreshControl: PropTypes.object,
   backgroundSource: PropTypes.oneOfType([
     PropTypes.shape({
       uri: PropTypes.string,
@@ -139,6 +149,13 @@ const getAnimateViewStyle = (scrollY, windowHeight) => {
     },
   };
 };
+
+const getImageBlur = (scrollY, miniBlur, maxBlur) => {
+  return scrollY.interpolate({
+    inputRange: [-miniBlur, 0, maxBlur],
+    outputRange: [miniBlur, 0, -maxBlur],
+  })
+}
 
 const styles = StyleSheet.create({
   container: {

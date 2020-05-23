@@ -1,6 +1,6 @@
 import React from 'react';
 import ParallaxView from 'react-native-parallax-header-view';
-import {StyleSheet, ScrollView, View, Text} from 'react-native';
+import {StyleSheet, ScrollView, View, Text, RefreshControl} from 'react-native';
 
 import {
   LearnMoreLinks,
@@ -26,12 +26,34 @@ const App: () => React$Node = () => {
     color: Colors.black,
   };
 
+  const parallaxViewStyle = {paddingTop: 20};
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const wait = timeout => {
+    return new Promise(resolve => {
+      setTimeout(resolve, timeout);
+    });
+  };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
+
   return (
     <ParallaxView
       backgroundSource={require('./logo.png')}
       windowHeight={250}
       backgroundStyle={backgroundStyle}
       headerStyle={headerStyle}
+      style={parallaxViewStyle}
+      maxBlur={10}
+      miniBlur={2}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
       header={<Text style={headerStyle}>Welcome to React</Text>}>
       <View>
         <ScrollView
