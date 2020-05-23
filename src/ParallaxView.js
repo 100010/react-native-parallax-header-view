@@ -30,7 +30,7 @@ export default class ParallaxView extends Component {
   }
 
   renderBackground() {
-    const {windowHeight, backgroundSource, backgroundStyle} = this.props;
+    const {windowHeight, backgroundSource, backgroundStyle, miniBlur, maxBlur} = this.props;
     if (!windowHeight || !backgroundSource) {
       return null;
     }
@@ -41,6 +41,7 @@ export default class ParallaxView extends Component {
           getAnimateViewStyle(this.state.scrollY, windowHeight).background,
           backgroundStyle,
         ]}
+        blurRadius={getImageBlur(this.state.scrollY, miniBlur || 0,maxBlur || 0)}
         source={backgroundSource}
       />
     );
@@ -142,6 +143,13 @@ const getAnimateViewStyle = (scrollY, windowHeight) => {
     },
   };
 };
+
+const getImageBlur = (scrollY, miniBlur, maxBlur) => {
+  return scrollY.interpolate({
+    inputRange: [-miniBlur, 0, maxBlur],
+    outputRange: [miniBlur, 0, -maxBlur],
+  })
+}
 
 const styles = StyleSheet.create({
   container: {

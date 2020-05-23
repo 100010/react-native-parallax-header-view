@@ -26,7 +26,7 @@ const App: () => React$Node = () => {
     color: Colors.black,
   };
 
-  const parallaxViewStyle = {paddingTop: 20}
+  const parallaxViewStyle = {paddingTop: 20};
 
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -49,6 +49,8 @@ const App: () => React$Node = () => {
       backgroundStyle={backgroundStyle}
       headerStyle={headerStyle}
       style={parallaxViewStyle}
+      maxBlur={10}
+      miniBlur={2}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
