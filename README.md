@@ -12,8 +12,7 @@ $ npm i react-native-header-parallax-view --save
 
 ## Demo
 
-![parallax view demo](https://i.gyazo.com/e5e46d9ef4518b6a7354718947ce401d.gif)
-
+![parallax view demo](https://i.gyazo.com/f0596d8f47dacfe19b0c3aaa8cc05241.gif)
 
 NOTE:
 - this package requires <b>React > 15.5.0</b>.If you want to use a lower version, please use [this original repository](https://github.com/lelandrichardson/react-native-parallax-view)
@@ -132,6 +131,8 @@ export default App;
 | :------------ |:---:|:---------------:| :---------------:| :-----|
 | backgroundSource | YES | `null` | `object` | this style defines background image style|
 | backgroundStyle | NO | `null` | `object` | the `source` prop that get's passed to the background `<Image>` component. If left blank, no background is rendered |
+| miniBlur | NO | `null` | `number` | This defines the minimum value of image blur. The default value is 0.|
+| maxBlur | NO | `null` | `number` | This defines the maximum value of image blur. The default value is 0. |
 | header | NO | `null` | `renderable` | any content you want to render on top of the image. This content's opacity get's animated down as the scrollview scrolls up. (optional) |
 | windowHeight | NO | `300` | `number` | the resting height of the header image. If 0 is passed in, the background is not rendered. |
 | scrollableViewStyle | NO | `null` | `object` | this style will be mixed (overriding existing fields) with scrollable view style (view which is scrolled over the background) |
