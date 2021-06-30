@@ -7,7 +7,7 @@ Parallax header view for react-native.
 ## Installation
 
 ```bash
-$ npm i react-native-header-parallax-view --save
+$ npm i react-native-parallax-header-view --save
 ```
 
 ## Demo
